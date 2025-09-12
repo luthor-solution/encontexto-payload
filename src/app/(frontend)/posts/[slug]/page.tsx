@@ -1,22 +1,44 @@
+// app/posts/[slug]/page.tsx
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
-import { PayloadRedirects } from '@/components/PayloadRedirects'
-import configPromise from '@payload-config'
+import ContentBlocks from '@/blocks/ContentBlocks/Component'
 import { getPayload } from 'payload'
+import payloadConfig from '@payload-config'
 import { draftMode } from 'next/headers'
-import React, { cache } from 'react'
-import RichText from '@/components/RichText'
-
-import type { Post } from '@/payload-types'
-
-import { PostHero } from '@/heros/PostHero'
-import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
+import { mediaUrl } from '@/utilities/mediaUrl'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { Category, Media, Post } from '@/payload-types'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
+import { isObj } from '@/utilities/isObj'
 
+export const revalidate = 60
+
+async function fetchPost(slug: string, depth = 2) {
+  const { isEnabled: draft } = await draftMode()
+
+  const payload = await getPayload({ config: payloadConfig })
+
+  const result = await payload.find({
+    collection: 'posts',
+    draft,
+    limit: 1,
+    overrideAccess: draft,
+    pagination: false,
+    depth,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
+}
+
+// ----------------- generateStaticParams -----------------
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: payloadConfig })
   const posts = await payload.find({
     collection: 'posts',
     draft: false,
@@ -35,70 +57,154 @@ export async function generateStaticParams() {
   return params
 }
 
-type Args = {
-  params: Promise<{
-    slug?: string
-  }>
+// ----------------- generateMetadata -----------------
+type GenerateMetadataCtx = { params: Promise<{ slug: string }> }
+
+export async function generateMetadata({ params }: GenerateMetadataCtx): Promise<Metadata> {
+  const { slug } = await params
+  const post = await fetchPost(slug)
+  if (!post) {
+    return { title: 'No encontrado | Diario en Contexto' }
+  }
+
+  const metaTitle = post.seo?.metaTitle || post.title
+  const metaDescription = post.seo?.metaDescription || ''
+  const canonical =
+    post.seo?.canonical || `${process.env.NEXT_PUBLIC_SERVER_URL}/posts/${post.slug}`
+  const og = post.seo?.openGraph || {}
+  const tw = post.seo?.twitter || {}
+
+  const ogImg = getMediaUrl((og.ogImage as Media)?.url)
+  const twImg = getMediaUrl((tw.image as Media)?.url)
+
+  // Robots
+  const robotsIndex = post.seo?.robotsIndex !== 'noindex'
+  const robotsFollow = post.seo?.robotsFollow !== 'nofollow'
+  const advanced = !!post.seo?.robotsAdvanced
+
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL),
+    title: metaTitle,
+    description: metaDescription,
+    alternates: { canonical },
+    robots: {
+      index: robotsIndex,
+      follow: robotsFollow,
+      // “advanced” mapea a estas flags:
+      nocache: undefined,
+      noarchive: advanced || undefined,
+      nosnippet: advanced || undefined,
+      noimageindex: advanced || undefined,
+      // Puedes ajustar googleBot si quieres granularidad:
+      // googleBot: { index: robotsIndex ? 'index' : 'noindex', follow: robotsFollow ? 'follow' : 'nofollow' },
+    },
+    openGraph: {
+      type: og.ogType || 'article',
+      title: og.ogTitle || metaTitle,
+      description: og.ogDescription || metaDescription,
+      url: canonical,
+      siteName: og.ogSiteName || 'Diario en Contexto',
+      locale: og.ogLocale || 'es_MX',
+      images: ogImg ? [{ url: ogImg, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: tw.card || 'summary_large_image',
+      title: tw.title || metaTitle,
+      description: tw.description || metaDescription,
+      images: twImg ? [twImg] : undefined,
+      creator: tw.creator || '',
+    },
+    // keywords no es necesario para SEO moderno, pero si insistes:
+    // keywords: post.seo?.keywords,
+  }
 }
 
-export default async function Post({ params: paramsPromise }: Args) {
+// ----------------- Página -----------------
+export default async function PostPage({ params }: GenerateMetadataCtx) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = '' } = await paramsPromise
-  const url = '/posts/' + slug
-  const post = await queryPostBySlug({ slug })
+  const { slug } = await params
+  const post = await fetchPost(slug, 4)
+  if (!post || (post.status === 'draft' && !draft)) notFound()
 
-  if (!post) return <PayloadRedirects url={url} />
+  const pubISO = post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined
+
+  // JSON-LD (inyectado en el body)
+  const jsonldEnabled = post.seo?.jsonld?.enable !== false // por defecto true
+  const jsonldType = post.seo?.jsonld?.type || 'NewsArticle'
+  const jsonldImg = mediaUrl(
+    (post.seo?.jsonld?.image as Media) || (post.seo?.openGraph?.ogImage as Media),
+  )
+
+  const jsonld = jsonldEnabled
+    ? {
+        '@context': 'https://schema.org',
+        '@type': jsonldType,
+        headline: post.seo?.jsonld?.headline || post.seo?.metaTitle || post.title,
+        mainEntityOfPage: `${process.env.NEXT_PUBLIC_SERVER_URL}/posts/${post.slug}`,
+        datePublished: pubISO,
+        image: jsonldImg ? [jsonldImg] : undefined,
+      }
+    : null
+
+  const relatedPosts = await Promise.all(
+    post.blocks
+      .find((r) => r.blockType == 'relatedPosts')
+      ?.manual?.map(async (pp) => {
+        if (isObj(pp)) {
+          const post = await fetchPost((pp as Post).slug!, 1)
+          return post
+        }
+        return null
+      }) || [],
+  )
 
   return (
-    <article className="pt-16 pb-16">
-      <PageClient />
-
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
-
+    <main className="container mx-auto px-4">
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+      <div className="grid grid-cols-3 gap-12">
+        <article itemScope itemType="https://schema.org/NewsArticle" className="col-span-2">
+          {/* Header “oculto” para accesibilidad/SEO si el Hero ya muestra el título */}
+          <div className="sr-only">
+            <h1 itemProp="headline">{post.title}</h1>
+            {pubISO && <time itemProp="datePublished" dateTime={pubISO} />}
+          </div>
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
-          )}
-        </div>
+          <ContentBlocks blocks={post.blocks.filter((r) => r.blockType != 'relatedPosts')} />
+
+          <div className="mt-12 pb-12 border-t border-neutral-200 dark:border-neutral-800 pt-6 text-sm text-neutral-600 dark:text-neutral-400">
+            {post.categories?.length ? (
+              <p className="mt-2">
+                Categorías:{' '}
+                {(post.categories as unknown as Category[]).map((c, i) => (
+                  <span key={c.id}>
+                    {i > 0 ? ', ' : ''}
+                    <a href={`/categoria/${c.slug}`} className="underline hover:no-underline">
+                      {c.title}
+                    </a>
+                  </span>
+                ))}
+              </p>
+            ) : null}
+          </div>
+        </article>
+
+        {relatedPosts && (
+          <div className="w-full flex flex-col gap-4">
+            <h4 className="text-lg">Noticias relacionadas</h4>
+            <RelatedPosts docs={relatedPosts as Post[]} />
+          </div>
+        )}
       </div>
-    </article>
+
+      {/* JSON-LD */}
+      {jsonld && (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
+        />
+      )}
+    </main>
   )
 }
-
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
-
-  return generateMeta({ doc: post })
-}
-
-const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode()
-
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'posts',
-    draft,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      slug: {
-        equals: slug,
-      },
-    },
-  })
-
-  return result.docs?.[0] || null
-})
