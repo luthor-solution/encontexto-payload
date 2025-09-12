@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 export function QuoteBlock({ text, author, source, emphasis = true }: QuoteBlockT) {
   return (
-    <aside className="my-8" aria-label="Cita destacada">
+    <aside className="my-8 container" aria-label="Cita destacada">
       <figure
         className={clsx('border-l-4 pl-4', emphasis ? 'border-current' : 'border-neutral-300')}
       >

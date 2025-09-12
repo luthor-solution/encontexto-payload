@@ -16,7 +16,6 @@ import { HeroBlock } from '../Hero/Component'
 import { ImageBlockComp } from '../Image/Component'
 import { QuoteBlock } from '../Quote/Component'
 import { RelatedPosts } from '../RelatedPosts/Component'
-import { RichTextBlock } from '../RichText/Component'
 import { TimelineBlock } from '../Timeline/Component'
 import RichText from '@/components/RichText'
 
@@ -42,7 +41,9 @@ export function ContentBlocks({ blocks }: { blocks: AnyBlock[] }) {
           case 'hero':
             return <HeroBlock key={key} {...(block as HeroBlockT)} />
           case 'richText':
-            return <RichText key={key} data={(block as RichTextBlockT).content} />
+            return (
+              <RichText key={key} data={(block as RichTextBlockT).content} enableProse={false} />
+            )
           case 'quote':
             return <QuoteBlock key={key} {...(block as QuoteBlockT)} />
           case 'image':

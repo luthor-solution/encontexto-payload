@@ -3,7 +3,7 @@ import { Block } from 'payload'
 export const RichText: Block = {
   interfaceName: 'RichTextBlockT',
   slug: 'richText',
-  labels: { singular: 'Texto', plural: 'Textos' },
+  labels: { singular: 'Texto Enriquecido', plural: 'Textos' },
   fields: [
     {
       name: 'content',
