@@ -158,7 +158,7 @@ export default async function PostPage({ params }: GenerateMetadataCtx) {
   )
 
   return (
-    <main className="container mx-auto px-4">
+    <main className="container mx-auto px-4 pt-24">
       {draft && <LivePreviewListener />}
 
       <div className="grid grid-cols-3 gap-12">

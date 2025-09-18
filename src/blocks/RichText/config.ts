@@ -6,7 +6,7 @@ export const RichText: Block = {
   labels: { singular: 'Texto Enriquecido', plural: 'Textos' },
   fields: [
     {
-      name: 'content',
+      name: 'data',
       type: 'richText',
       required: true,
     },

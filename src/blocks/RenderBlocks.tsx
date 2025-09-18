@@ -10,6 +10,8 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { RowView } from './Row/Component'
 import HeroGrid from './HeroGrid/Component'
 import CategoryMenu from './CategoryMenu/Component'
+import PerspectiveEconomyChart from './PerspectiveEconomyChart/Component'
+import RichText from '@/components/RichText'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,6 +22,8 @@ const blockComponents = {
   row: RowView,
   heroGrid: HeroGrid,
   categoryMenu: CategoryMenu,
+  perspectiveEconomy: PerspectiveEconomyChart,
+  richText: RichText,
 }
 
 export const RenderBlocks: React.FC<{

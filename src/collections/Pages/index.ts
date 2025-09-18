@@ -21,6 +21,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { Row } from '@/blocks/Row/config'
 import { HeroGrid } from '@/blocks/HeroGrid/config'
+import { PerspectiveEconomyChart } from '@/blocks/PerspectiveEconomyChart/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -72,7 +73,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, Row, HeroGrid],
+              blocks: [Row],
               required: true,
               admin: {
                 initCollapsed: true,

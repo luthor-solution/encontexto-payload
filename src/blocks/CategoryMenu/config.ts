@@ -9,7 +9,7 @@ export const CategoryMenu: Block = {
       type: 'text',
       label: 'Base path para categorías',
       defaultValue: '/category',
-      admin: { description: 'Prefijo de las URLs de categoría, ej. /category o /blog/categoria' },
+      admin: { description: 'Prefijo de las URLs de categoría, ej. /category o /posts/categoria' },
     },
     {
       name: 'source',

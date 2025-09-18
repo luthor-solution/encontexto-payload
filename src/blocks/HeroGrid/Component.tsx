@@ -31,7 +31,7 @@ const PostGrid = ({ doc, showDates }: { doc: Post; showDates: boolean }) => {
     }
   }
 
-  const href = (p?: Post) => (p?.slug ? `/blog/${p.slug}` : '#')
+  const href = (p?: Post) => (p?.slug ? `/posts/${p.slug}` : '#')
 
   const { src, alt } = cover(doc)
   return (
