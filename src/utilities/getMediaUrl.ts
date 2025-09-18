@@ -13,12 +13,7 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     cacheTag = encodeURIComponent(cacheTag)
   }
 
-  // Check if URL already has http/https protocol
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return cacheTag ? `${url}?${cacheTag}` : url
-  }
-
   // Otherwise prepend client-side URL
-  const baseUrl = getClientSideURL()
+  const baseUrl = 'https://storage.googleapis.com/payload-diarioencontexto/'
   return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
 }

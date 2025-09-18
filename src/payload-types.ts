@@ -148,50 +148,95 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (number | null) | Media;
-  };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | {
+        asContainer?: boolean | null;
+        maxWidth?: ('lg' | 'xl' | '2xl' | '7xl' | 'full') | null;
+        background?: ('transparent' | 'white' | 'neutral-900' | 'zinc-50' | 'panel') | null;
+        paddingY?: ('' | 'py-6 md:py-8' | 'py-8 md:py-12' | 'py-12 md:py-16' | 'py-16 md:py-24') | null;
+        gap?: ('gap-0' | 'gap-3 md:gap-4' | 'gap-4 md:gap-6' | 'gap-6 md:gap-8' | 'gap-8 md:gap-12') | null;
+        alignY?: ('items-start' | 'items-center' | 'items-end' | 'items-stretch') | null;
+        alignX?: ('justify-start' | 'justify-center' | 'justify-end' | 'justify-between') | null;
+        /**
+         * Define cuántas columnas tiene la grilla
+         */
+        cols?: {
+          base?: number | null;
+          sm?: number | null;
+          md?: number | null;
+          lg?: number | null;
+          xl?: number | null;
+        };
+        cells?:
+          | {
+              blocks: (
+                | RichTextBlockT
+                | ArchiveBlock
+                | {
+                    source: 'latest' | 'byCategory' | 'manual';
+                    category?: (number | null) | Category;
+                    posts?: (number | Post)[] | null;
+                    /**
+                     * Usa 5 para layout (1 principal + 4 secundarios).
+                     */
+                    limit?: number | null;
+                    offset?: number | null;
+                    showDates?: boolean | null;
+                    locale?: ('es' | 'en' | 'pt') | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'heroGrid';
+                  }
+                | {
+                    /**
+                     * Prefijo de las URLs de categoría, ej. /category o /blog/categoria
+                     */
+                    basePath?: string | null;
+                    source: 'all' | 'selected';
+                    /**
+                     * Arrastra para ordenar. Se respetará este orden.
+                     */
+                    selectedCategories?: (number | Category)[] | null;
+                    maxCategories?: number | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'categoryMenu';
+                  }
+              )[];
+              vAlign?: ('self-stretch' | 'self-start' | 'self-center' | 'self-end') | null;
+              base?: number | null;
+              sm?: number | null;
+              md?: number | null;
+              lg?: number | null;
+              xl?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'row';
+      }
+    | {
+        source: 'latest' | 'byCategory' | 'manual';
+        category?: (number | null) | Category;
+        posts?: (number | Post)[] | null;
+        /**
+         * Usa 5 para layout (1 principal + 4 secundarios).
+         */
+        limit?: number | null;
+        offset?: number | null;
+        showDates?: boolean | null;
+        locale?: ('es' | 'en' | 'pt') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'heroGrid';
+      }
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -206,6 +251,54 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -544,54 +637,6 @@ export interface RelatedPostsBlockT {
   id?: string | null;
   blockName?: string | null;
   blockType: 'relatedPosts';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1173,28 +1218,6 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  hero?:
-    | T
-    | {
-        type?: T;
-        richText?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-              id?: T;
-            };
-        media?: T;
-      };
   layout?:
     | T
     | {
@@ -1203,6 +1226,81 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        row?:
+          | T
+          | {
+              asContainer?: T;
+              maxWidth?: T;
+              background?: T;
+              paddingY?: T;
+              gap?: T;
+              alignY?: T;
+              alignX?: T;
+              cols?:
+                | T
+                | {
+                    base?: T;
+                    sm?: T;
+                    md?: T;
+                    lg?: T;
+                    xl?: T;
+                  };
+              cells?:
+                | T
+                | {
+                    blocks?:
+                      | T
+                      | {
+                          richText?: T | RichTextBlockTSelect<T>;
+                          archive?: T | ArchiveBlockSelect<T>;
+                          heroGrid?:
+                            | T
+                            | {
+                                source?: T;
+                                category?: T;
+                                posts?: T;
+                                limit?: T;
+                                offset?: T;
+                                showDates?: T;
+                                locale?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          categoryMenu?:
+                            | T
+                            | {
+                                basePath?: T;
+                                source?: T;
+                                selectedCategories?: T;
+                                maxCategories?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                        };
+                    vAlign?: T;
+                    base?: T;
+                    sm?: T;
+                    md?: T;
+                    lg?: T;
+                    xl?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        heroGrid?:
+          | T
+          | {
+              source?: T;
+              category?: T;
+              posts?: T;
+              limit?: T;
+              offset?: T;
+              showDates?: T;
+              locale?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1304,6 +1402,15 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlockT_select".
+ */
+export interface RichTextBlockTSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1390,15 +1497,6 @@ export interface HeroBlockTSelect<T extends boolean = true> {
   videoUrl?: T;
   align?: T;
   darkOverlay?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlockT_select".
- */
-export interface RichTextBlockTSelect<T extends boolean = true> {
-  content?: T;
   id?: T;
   blockName?: T;
 }

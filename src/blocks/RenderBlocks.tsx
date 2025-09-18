@@ -7,6 +7,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { RowView } from './Row/Component'
+import HeroGrid from './HeroGrid/Component'
+import CategoryMenu from './CategoryMenu/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -14,10 +17,14 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  row: RowView,
+  heroGrid: HeroGrid,
+  categoryMenu: CategoryMenu,
 }
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
+  className?: string
 }> = (props) => {
   const { blocks } = props
 
@@ -34,9 +41,9 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
-                  <Block {...block} disableInnerContainer />
+                  <Block {...block} disableInnerContainer className={props.className} />
                 </div>
               )
             }

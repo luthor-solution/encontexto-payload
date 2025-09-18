@@ -11,6 +11,7 @@ import { Category, Media, Post } from '@/payload-types'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { isObj } from '@/utilities/isObj'
+import { getPostImage } from '@/utilities/getPostImage'
 
 export const revalidate = 60
 
@@ -131,9 +132,7 @@ export default async function PostPage({ params }: GenerateMetadataCtx) {
   // JSON-LD (inyectado en el body)
   const jsonldEnabled = post.seo?.jsonld?.enable !== false // por defecto true
   const jsonldType = post.seo?.jsonld?.type || 'NewsArticle'
-  const jsonldImg = mediaUrl(
-    (post.seo?.jsonld?.image as Media) || (post.seo?.openGraph?.ogImage as Media),
-  )
+  const jsonldImg = getPostImage(post)
 
   const jsonld = jsonldEnabled
     ? {

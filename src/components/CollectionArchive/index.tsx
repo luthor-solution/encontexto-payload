@@ -1,10 +1,11 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
-import { Card, CardPostData } from '@/components/Card'
+import { Card } from '@/components/Card'
+import { Post } from '@/payload-types'
 
 export type Props = {
-  posts: CardPostData[]
+  posts: Post[]
 }
 
 export const CollectionArchive: React.FC<Props> = (props) => {

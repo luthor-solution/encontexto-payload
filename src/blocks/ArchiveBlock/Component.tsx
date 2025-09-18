@@ -18,9 +18,9 @@ export const ArchiveBlock: React.FC<
 
   let posts: Post[] = []
 
-  if (populateBy === 'collection') {
-    const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
 
+  if (populateBy === 'collection') {
     const flattenedCategories = categories?.map((category) => {
       if (typeof category === 'object') return category.id
       else return category
@@ -44,16 +44,33 @@ export const ArchiveBlock: React.FC<
     posts = fetchedPosts.docs
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedPosts = selectedDocs.map((post) => {
-        if (typeof post.value === 'object') return post.value
-      }) as Post[]
+      const filteredSelectedPosts = (await Promise.all(
+        selectedDocs.map(async (post) => {
+          if (typeof post.value === 'number') return Promise.resolve({})
+
+          const res = await payload.findByID({
+            collection: 'posts',
+            id: (post.value as Post).id,
+            select: {
+              id: true,
+              slug: true,
+              seo: true,
+              title: true,
+              categories: true,
+              publishedAt: true,
+              tags: true,
+            },
+          })
+          return res
+        }),
+      )) as Post[]
 
       posts = filteredSelectedPosts
     }
   }
 
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <div className="h-full w-full" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-16">
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
