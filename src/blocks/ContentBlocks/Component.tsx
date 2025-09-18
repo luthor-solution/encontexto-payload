@@ -41,9 +41,7 @@ export function ContentBlocks({ blocks }: { blocks: AnyBlock[] }) {
           case 'hero':
             return <HeroBlock key={key} {...(block as HeroBlockT)} />
           case 'richText':
-            return (
-              <RichText key={key} data={(block as RichTextBlockT).content} enableProse={false} />
-            )
+            return <RichText key={key} data={(block as RichTextBlockT).data} enableProse={false} />
           case 'quote':
             return <QuoteBlock key={key} {...(block as QuoteBlockT)} />
           case 'image':
