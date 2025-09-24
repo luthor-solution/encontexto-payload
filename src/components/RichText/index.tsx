@@ -1,4 +1,3 @@
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import {
   DefaultNodeTypes,
   SerializedBlockNode,
@@ -10,9 +9,7 @@ import {
   LinkJSXConverter,
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
-
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
 
 type NodeTypes = DefaultNodeTypes | SerializedBlockNode<CodeBlockProps>

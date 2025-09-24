@@ -19,21 +19,17 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   return url
 }
 
-export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post> | null
-}): Promise<Metadata> => {
+export const generateMeta = async (args: { doc: Partial<Post> | null }): Promise<Metadata> => {
   const { doc } = args
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  const ogImage = getImageURL(doc?.seo?.openGraph?.ogImage)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+  const title = doc?.seo?.metaTitle ? doc?.seo.metaTitle : 'Diario en contexto'
 
   return {
-    description: doc?.meta?.description,
+    description: doc?.seo?.metaDescription,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: doc?.seo?.metaDescription || '',
       images: ogImage
         ? [
             {

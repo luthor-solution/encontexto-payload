@@ -3,10 +3,7 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { RowView } from './Row/Component'
 import HeroGrid from './HeroGrid/Component'
 import CategoryMenu from './CategoryMenu/Component'
@@ -15,10 +12,7 @@ import RichText from '@/components/RichText'
 
 const blockComponents = {
   archive: ArchiveBlock,
-  content: ContentBlock,
-  cta: CallToActionBlock,
   formBlock: FormBlock,
-  mediaBlock: MediaBlock,
   row: RowView,
   heroGrid: HeroGrid,
   categoryMenu: CategoryMenu,

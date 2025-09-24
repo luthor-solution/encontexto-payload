@@ -105,3 +105,31 @@ html[data-theme='light'] {
 .container {
   max-width: 1170px;
 }
+
+article[itemtype="https://schema.org/NewsArticle"] {
+  @apply tracking-wide;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] h2 {
+  @apply mb-4 font-bold text-xl;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] h3 {
+  @apply mb-4 font-medium text-lg;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] p {
+  @apply mb-4;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] ul.list-bullet {
+  margin-left: 1em;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] ul.list-bullet li {
+  list-style: circle;
+}
+
+article[itemtype="https://schema.org/NewsArticle"] ul.list-bullet a {
+  @apply text-blue-400 underline;
+}
