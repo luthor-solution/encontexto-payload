@@ -36,7 +36,13 @@ export const Media: CollectionConfig = {
   upload: {
     adminThumbnail: 'thumbnail',
     focalPoint: true,
-    pasteURL: false,
+    pasteURL: {
+      allowList: [
+        {
+          hostname: '*',
+        },
+      ],
+    },
     imageSizes: [
       {
         name: 'thumbnail',
