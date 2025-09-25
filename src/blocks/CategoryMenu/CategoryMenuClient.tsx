@@ -17,7 +17,7 @@ export default function CategoryMenuClient({ items }: { items: Item[] }) {
 
   return (
     <nav aria-label={'Menu'} className={'border-b-2 border-solid pb-2 w-full'}>
-      <div id={ulId} className="flex justify-evenly">
+      <div id={ulId} className="flex flex-wrap gap-4 justify-evenly">
         {items.map((it, idx) => {
           const active = isActive(it.href, it.type)
           const liTypeClass =

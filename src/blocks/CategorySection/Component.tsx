@@ -56,10 +56,7 @@ export default async function CategorySection(props: CategorySectionBlock) {
   return (
     <div>
       <h3 className="mb-2 font-medium text-xl">{category.title}</h3>
-      <div
-        className="grid gap-1 w-full"
-        style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
-      >
+      <div className={`grid gap-1 w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-[${columns}]`}>
         {docs.map((p, i) => {
           return (
             <div key={p.id ?? i}>

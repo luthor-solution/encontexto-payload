@@ -86,13 +86,15 @@ export default async function HeroGrid(props: HeroGridBlock) {
   return (
     <div className="grid grid-cols-12 grid-rows-2 gap-1 w-full">
       {/* Col principal */}
-      <div className="col-span-6 row-span-2">{main && <PostGrid doc={main} showDates />}</div>
+      <div className="col-span-12 md:col-span-6 row-span-2">
+        {main && <PostGrid doc={main} showDates />}
+      </div>
 
       {/* Col secundaria izquierda (2 items) */}
 
       {rest.map((p, i) => {
         return (
-          <div key={p.id ?? i} className="col-span-3">
+          <div key={p.id ?? i} className="col-span-6 md:col-span-3">
             <PostGrid doc={p} showDates={showDates} />
           </div>
         )
