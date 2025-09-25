@@ -64,6 +64,11 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    where: {
+      status: {
+        equals: 'published',
+      },
+    },
     select: {
       slug: true,
     },
@@ -78,7 +83,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: GenerateMetadataCtx): Promise<Metadata> {
   const { slug } = await params
-  const post = await fetchPost(slug)
+  const post = await fetchPost(slug, 4)
   if (!post) {
     return { title: 'No encontrado | Diario en Contexto' }
   }
