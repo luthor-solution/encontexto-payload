@@ -10,6 +10,7 @@ import { themeIsValid } from './types'
 
 const initialContext: ThemeContextType = {
   setTheme: () => null,
+  toggleTheme: () => null,
   theme: undefined,
 }
 
@@ -33,6 +34,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
+  const toggleTheme = () => {
+    const newstate = theme == 'light' ? 'dark' : 'light'
+    setTheme(newstate)
+  }
+
   useEffect(() => {
     let themeToSet: Theme = defaultTheme
     const preference = window.localStorage.getItem(themeLocalStorageKey)
@@ -51,7 +57,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     setThemeState(themeToSet)
   }, [])
 
-  return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
+  return <ThemeContext value={{ setTheme, theme, toggleTheme }}>{children}</ThemeContext>
 }
 
 export const useTheme = (): ThemeContextType => use(ThemeContext)

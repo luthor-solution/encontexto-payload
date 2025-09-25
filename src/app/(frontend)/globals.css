@@ -86,7 +86,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border transition-all;
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
