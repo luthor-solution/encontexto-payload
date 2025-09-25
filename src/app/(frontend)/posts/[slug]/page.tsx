@@ -184,8 +184,12 @@ export default async function PostPage({ params }: GenerateMetadataCtx) {
     <main className="container mx-auto px-4 pt-24">
       {draft && <LivePreviewListener />}
 
-      <div className="grid grid-cols-3 gap-12">
-        <article itemScope itemType="https://schema.org/NewsArticle" className="col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <article
+          itemScope
+          itemType="https://schema.org/NewsArticle"
+          className="col-span-full md:col-span-2"
+        >
           {/* Header “oculto” para accesibilidad/SEO si el Hero ya muestra el título */}
           <div className="sr-only">
             <h1 itemProp="headline">{post.title}</h1>
