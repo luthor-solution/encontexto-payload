@@ -344,7 +344,7 @@ export interface Post {
   /**
    * Metadatos para buscadores y redes sociales
    */
-  seo?: {
+  seo: {
     /**
      * ≈ 50–60 caracteres
      */
@@ -364,10 +364,10 @@ export interface Post {
      * Equivale a: noarchive, nosnippet, noimageindex
      */
     robotsAdvanced?: boolean | null;
-    openGraph?: {
+    openGraph: {
       ogTitle?: string | null;
       ogDescription?: string | null;
-      ogImage?: (number | null) | Media;
+      ogImage: number | Media;
       ogType?: ('article' | 'website') | null;
       ogSiteName?: string | null;
       ogLocale?: string | null;

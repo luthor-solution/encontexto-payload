@@ -80,6 +80,7 @@ export const SEO: Field = {
           type: 'upload',
           relationTo: 'media',
           label: 'OG Image (1200×630 recomendado)',
+          required: true,
         },
         {
           name: 'ogType',
