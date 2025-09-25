@@ -78,7 +78,7 @@ export const Posts: CollectionConfig<'posts'> = {
   access: {
     create: () => true,
     delete: authenticated,
-    read: authenticatedOrPublished,
+    read: () => true,
     update: authenticated,
   },
   defaultPopulate: {

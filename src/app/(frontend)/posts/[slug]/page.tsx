@@ -14,6 +14,9 @@ import { getPostImage } from '@/utilities/getPostImage'
 
 export const revalidate = 60
 
+// ----------------- generateMetadata -----------------
+type GenerateMetadataCtx = { params: Promise<{ slug: string }> }
+
 async function fetchPost(slug: string, depth = 2) {
   const { isEnabled: draft } = await draftMode()
 
@@ -36,6 +39,24 @@ async function fetchPost(slug: string, depth = 2) {
   return result.docs?.[0] || null
 }
 
+async function fetchRandomRelated(category: string, limit: number, id?: number) {
+  const payload = await getPayload({ config: payloadConfig })
+
+  const result = await payload.find({
+    collection: 'posts',
+    limit,
+    pagination: false,
+    depth: 4,
+    where: {
+      id: {
+        less_than: id,
+      },
+    },
+  })
+
+  return result.docs || []
+}
+
 // ----------------- generateStaticParams -----------------
 export async function generateStaticParams() {
   const payload = await getPayload({ config: payloadConfig })
@@ -56,9 +77,6 @@ export async function generateStaticParams() {
 
   return params
 }
-
-// ----------------- generateMetadata -----------------
-type GenerateMetadataCtx = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: GenerateMetadataCtx): Promise<Metadata> {
   const { slug } = await params
@@ -144,17 +162,20 @@ export default async function PostPage({ params }: GenerateMetadataCtx) {
       }
     : null
 
-  const relatedPosts = await Promise.all(
-    post.blocks
-      .find((r) => r.blockType == 'relatedPosts')
-      ?.manual?.map(async (pp) => {
-        if (isObj(pp)) {
-          const post = await fetchPost((pp as Post).slug!, 1)
-          return post
-        }
-        return null
-      }) || [],
-  )
+  const relatedBlock = post.blocks.find((r) => r.blockType == 'relatedPosts')
+
+  const relatedPosts =
+    relatedBlock?.mode == 'manual'
+      ? await Promise.all(
+          relatedBlock?.manual?.map(async (pp) => {
+            if (isObj(pp)) {
+              const post = await fetchPost((pp as Post).slug!, 1)
+              return post
+            }
+            return null
+          }) || [],
+        )
+      : await fetchRandomRelated('', relatedBlock?.limit || 4, post.id)
 
   return (
     <main className="container mx-auto px-4 pt-24">
