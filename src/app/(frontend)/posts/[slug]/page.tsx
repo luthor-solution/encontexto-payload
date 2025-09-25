@@ -12,8 +12,6 @@ import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { isObj } from '@/utilities/isObj'
 import { getPostImage } from '@/utilities/getPostImage'
 
-export const revalidate = 60
-
 // ----------------- generateMetadata -----------------
 type GenerateMetadataCtx = { params: Promise<{ slug: string }> }
 
