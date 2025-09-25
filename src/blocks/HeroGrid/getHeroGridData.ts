@@ -37,6 +37,9 @@ export async function getHeroGridData({
     status: {
       equals: 'published',
     },
+    category: {
+      not_equals: 5,
+    },
   }
   if (source === 'byCategory' && category) {
     const catId = typeof category === 'string' ? category : category.id
