@@ -34,7 +34,7 @@ export async function getHeroGridData({
   }
 
   const where: Where = {
-    _status: {
+    status: {
       equals: 'published',
     },
   }
