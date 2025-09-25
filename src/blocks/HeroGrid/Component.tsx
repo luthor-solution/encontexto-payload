@@ -53,7 +53,6 @@ const PostGrid = ({ doc, showDates }: { doc: Post; showDates: boolean }) => {
           {showDates && (
             <div className="anwp-pg-post-teaser__bottom-meta mt-1 position-relative mb-2">
               <span className="posted-on m-0">
-                <span className="screen-reader-text">Posted on</span>
                 <time className="anwp-pg-published" dateTime={doc.publishedAt ?? ''}>
                   {formatDate(doc.publishedAt)}
                 </time>
@@ -87,9 +86,7 @@ export default async function HeroGrid(props: HeroGridBlock) {
   return (
     <div className="grid grid-cols-12 grid-rows-2 gap-1 w-full">
       {/* Col principal */}
-      <div className="col-span-6 row-span-2">
-        {main && <PostGrid doc={main} showDates={showDates} />}
-      </div>
+      <div className="col-span-6 row-span-2">{main && <PostGrid doc={main} showDates />}</div>
 
       {/* Col secundaria izquierda (2 items) */}
 

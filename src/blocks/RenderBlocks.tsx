@@ -9,6 +9,7 @@ import HeroGrid from './HeroGrid/Component'
 import CategoryMenu from './CategoryMenu/Component'
 import PerspectiveEconomyChart from './PerspectiveEconomyChart/Component'
 import RichText from '@/components/RichText'
+import CategorySection from './CategorySection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -18,6 +19,7 @@ const blockComponents = {
   categoryMenu: CategoryMenu,
   perspectiveEconomy: PerspectiveEconomyChart,
   richText: RichText,
+  categorySection: CategorySection,
 }
 
 export const RenderBlocks: React.FC<{

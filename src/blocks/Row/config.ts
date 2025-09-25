@@ -4,6 +4,7 @@ import { Archive } from '../ArchiveBlock/config'
 import { HeroGrid } from '../HeroGrid/config'
 import { CategoryMenu } from '../CategoryMenu/config'
 import { PerspectiveEconomyChart } from '../PerspectiveEconomyChart/config'
+import { CategorySection } from '../CategorySection/config'
 
 export const Row: Block = {
   slug: 'row',
@@ -159,7 +160,14 @@ export const Row: Block = {
           required: true,
           label: 'Contenido de la columna',
           // agrega aquí los blocks que quieras permitir dentro de una columna
-          blocks: [RichText, Archive, HeroGrid, CategoryMenu, PerspectiveEconomyChart],
+          blocks: [
+            RichText,
+            Archive,
+            HeroGrid,
+            CategoryMenu,
+            PerspectiveEconomyChart,
+            CategorySection,
+          ],
         },
         {
           name: 'vAlign',

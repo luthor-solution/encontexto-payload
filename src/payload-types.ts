@@ -206,6 +206,7 @@ export interface Page {
                 blockName?: string | null;
                 blockType: 'perspectiveEconomy';
               }
+            | CategorySectionBlock
           )[];
           vAlign?: ('self-stretch' | 'self-start' | 'self-center' | 'self-end') | null;
           base?: number | null;
@@ -606,6 +607,18 @@ export interface RelatedPostsBlockT {
   id?: string | null;
   blockName?: string | null;
   blockType: 'relatedPosts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategorySectionBlock".
+ */
+export interface CategorySectionBlock {
+  columns: number;
+  limit: number;
+  category: number | Category;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'categorySection';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1126,6 +1139,7 @@ export interface PagesSelect<T extends boolean = true> {
                                 id?: T;
                                 blockName?: T;
                               };
+                          categorySection?: T | CategorySectionBlockSelect<T>;
                         };
                     vAlign?: T;
                     base?: T;
@@ -1173,6 +1187,17 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategorySectionBlock_select".
+ */
+export interface CategorySectionBlockSelect<T extends boolean = true> {
+  columns?: T;
+  limit?: T;
+  category?: T;
   id?: T;
   blockName?: T;
 }
