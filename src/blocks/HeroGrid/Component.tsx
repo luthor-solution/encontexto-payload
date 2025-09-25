@@ -46,7 +46,7 @@ const PostGrid = ({ doc, showDates }: { doc: Post; showDates: boolean }) => {
           />
         )}
 
-        <div className="absolute bottom-0 left-0 h-full w-full bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <div className="absolute bottom-0 left-0 h-full w-full bg-gradient-to-t from-black/80 md:via-transparent to-transparent"></div>
 
         <div className="p-2 absolute bottom-0 left-0">
           <div className="text-white">{doc.title}</div>
