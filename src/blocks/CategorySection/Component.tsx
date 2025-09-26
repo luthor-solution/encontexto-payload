@@ -56,7 +56,7 @@ export default async function CategorySection(props: CategorySectionBlock) {
   return (
     <div>
       <h3 className="mb-2 font-medium text-xl">{category.title}</h3>
-      <div className={`grid gap-1 w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-[${columns}]`}>
+      <div className={`grid gap-1 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-[${columns}]`}>
         {docs.map((p, i) => {
           return (
             <div key={p.id ?? i}>
