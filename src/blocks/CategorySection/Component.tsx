@@ -40,6 +40,21 @@ const PostGrid = ({ doc }: { doc: Post }) => {
   )
 }
 
+/**
+ * grid-cols-1
+ * grid-cols-2
+ * grid-cols-3
+ * grid-cols-4
+ * grid-cols-5
+ * grid-cols-6
+ * grid-cols-7
+ * grid-cols-8
+ * grid-cols-9
+ * grid-cols-10
+ * grid-cols-11
+ * grid-cols-12
+ */
+
 export default async function CategorySection(props: CategorySectionBlock) {
   const payload = await getPayload({ config: payloadConfig })
 
@@ -56,7 +71,7 @@ export default async function CategorySection(props: CategorySectionBlock) {
   return (
     <div>
       <h3 className="mb-2 font-medium text-xl">{category.title}</h3>
-      <div className={`grid gap-1 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-[${columns}]`}>
+      <div className={`grid gap-1 w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-${columns}`}>
         {docs.map((p, i) => {
           return (
             <div key={p.id ?? i}>
