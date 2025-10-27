@@ -38,7 +38,7 @@ export async function getHeroGridData({
       equals: 'published',
     },
     categories: {
-      not_in: [5],
+      not_in: [2],
     },
   }
   if (source === 'byCategory' && category) {
