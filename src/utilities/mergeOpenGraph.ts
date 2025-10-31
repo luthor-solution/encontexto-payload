@@ -3,14 +3,15 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'An open-source website built with Payload and Next.js.',
+  description:
+    'Diario Contexto Jalisco es un portal digital que ofrece cobertura actualizada del estado de Jalisco: política, sociedad, cultura, economía y eventos. Mantente informado con rigor y rapidez.',
   images: [
     {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'Payload Website Template',
-  title: 'Payload Website Template',
+  siteName: 'Diario Contexto',
+  title: 'Diario Contexto Jalisco – Noticias locales, opinión y actualidad',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {
