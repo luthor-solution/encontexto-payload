@@ -227,7 +227,6 @@ export default async function PostPage({ params }: GenerateMetadataCtx) {
       {jsonld && (
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonld) }}
         />
       )}
