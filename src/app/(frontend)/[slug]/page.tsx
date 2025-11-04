@@ -56,7 +56,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       {/* Layout de 2 columnas: contenido + sidebar */}
-      <div className="container mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Contenido principal */}
           <section className="lg:col-span-8">
@@ -67,11 +67,11 @@ export default async function Page({ params: paramsPromise }: Args) {
           <aside className="lg:col-span-4">
             <div
               className="
-      lg:sticky lg:top-24           /* se pega a 96px del tope (24 = 6rem) */
-      lg:max-h-[calc(100vh-6rem)]   /* alto máximo = viewport - offset */
-      lg:overflow-auto               /* scroll interno si se excede */
-      lg:self-start                  /* evita estirarse en el grid */
-    "
+                lg:sticky lg:top-24           /* se pega a 96px del tope (24 = 6rem) */
+                lg:max-h-[calc(100vh-6rem)]   /* alto máximo = viewport - offset */
+                lg:overflow-auto               /* scroll interno si se excede */
+                lg:self-start                  /* evita estirarse en el grid */
+              "
             >
               <FeaturedNewsSidebar basePath="/posts" limit={6} />
             </div>
