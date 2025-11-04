@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+import { getPostImage } from '@/utilities/getPostImage'
 import payloadConfig from '@payload-config'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -140,18 +142,17 @@ export default async function CategoryPage({ params }: PageProps) {
         ) : (
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {docs.map((post: any) => {
-              const { src, alt } = coverFrom(post)
+              const src = getPostImage(post)
               return (
                 <li
                   key={post.id}
                   className="border rounded-xl overflow-hidden hover:shadow-md transition"
                 >
                   <a href={`/posts/${post.slug}`} className="block">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     {src ? (
                       <img
                         src={src}
-                        alt={alt}
+                        alt={post.title}
                         className="w-full h-48 object-cover"
                         loading="lazy"
                       />
