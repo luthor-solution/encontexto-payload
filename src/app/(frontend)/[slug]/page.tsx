@@ -13,6 +13,8 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 // NUEVO: importa tu sidebar
 import FeaturedNewsSidebar from '@/components/FeaturedNewsSidebar'
+import USDMXNWidget from '@/components/USDMXNWidget'
+import WeatherWidget from '@/components/WeatherWidget'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -60,6 +62,7 @@ export default async function Page({ params: paramsPromise }: Args) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Contenido principal */}
           <section className="lg:col-span-8">
+            <WeatherWidget />
             <RenderBlocks blocks={layout} />
           </section>
 
@@ -73,6 +76,7 @@ export default async function Page({ params: paramsPromise }: Args) {
                 lg:self-start                  /* evita estirarse en el grid */
               "
             >
+              <USDMXNWidget />
               <FeaturedNewsSidebar basePath="/posts" limit={6} />
             </div>
           </aside>

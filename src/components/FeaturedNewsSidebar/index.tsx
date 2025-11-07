@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
-import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { getPostImage } from '@/utilities/getPostImage'
 
@@ -12,7 +12,7 @@ type Props = {
 }
 
 export default async function FeaturedNewsSidebar({
-  title = 'Noticias destacadas',
+  title = 'Noticias populares',
   limit = 6,
   basePath = '/posts',
 }: Props) {

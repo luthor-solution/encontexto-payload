@@ -14,9 +14,14 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+
 import { Row } from '@/blocks/Row/config'
 import { HeroGrid } from '@/blocks/HeroGrid/config'
 import { PerspectiveEconomyChart } from '@/blocks/PerspectiveEconomyChart/config'
+
+// ➕ nuevos imports
+import { PopularNews } from '@/blocks/PopularNews/config'
+import { PromotedNews } from '@/blocks/PromotedNews/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -26,9 +31,6 @@ export const Pages: CollectionConfig<'pages'> = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  // This config controls what's populated by default when a page is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -42,7 +44,6 @@ export const Pages: CollectionConfig<'pages'> = {
           collection: 'pages',
           req,
         })
-
         return path
       },
     },
@@ -64,19 +65,43 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
+          label: 'Content',
           fields: [
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Row],
+              // Puedes mantener tus bloques actuales
+              blocks: [Row, HeroGrid, PerspectiveEconomyChart],
               required: true,
+              admin: { initCollapsed: true },
+            },
+          ],
+        },
+
+        // ➕ NUEVA PESTAÑA SOLO PARA /home
+        {
+          label: 'Right Column (Home)',
+          fields: [
+            {
+              name: 'rightColumn',
+              label: 'Columna derecha (/home)',
+              type: 'blocks',
+              blocks: [PopularNews, PromotedNews],
               admin: {
                 initCollapsed: true,
+                description: 'Contenido de la columna derecha exclusivo para la página /home.',
               },
             },
           ],
-          label: 'Content',
+          // Mostrar solo si el slug es 'home' o '/home'
+          admin: {
+            condition: (data: any) => {
+              const s = (data?.slug || '').toString().replace(/^\//, '')
+              return s === 'home'
+            },
+          },
         },
+
         {
           name: 'meta',
           label: 'SEO',
@@ -86,19 +111,11 @@ export const Pages: CollectionConfig<'pages'> = {
               descriptionPath: 'meta.description',
               imagePath: 'meta.image',
             }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
+            MetaTitleField({ hasGenerateFn: true }),
+            MetaImageField({ relationTo: 'media' }),
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
@@ -109,9 +126,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
     },
     ...slugField(),
   ],
@@ -122,9 +137,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   versions: {
     drafts: {
-      autosave: {
-        interval: 100, // We set this interval for optimal live preview
-      },
+      autosave: { interval: 100 },
       schedulePublish: true,
     },
     maxPerDoc: 50,

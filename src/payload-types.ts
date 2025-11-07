@@ -150,79 +150,105 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout: {
-    asContainer?: boolean | null;
-    maxWidth?: ('lg' | 'xl' | '2xl' | '7xl' | 'full') | null;
-    background?: ('transparent' | 'white' | 'neutral-900' | 'zinc-50' | 'panel') | null;
-    paddingY?: ('' | 'py-6 md:py-8' | 'py-8 md:py-12' | 'py-12 md:py-16' | 'py-16 md:py-24') | null;
-    gap?: ('gap-0' | 'gap-3 md:gap-4' | 'gap-4 md:gap-6' | 'gap-6 md:gap-8' | 'gap-8 md:gap-12') | null;
-    alignY?: ('items-start' | 'items-center' | 'items-end' | 'items-stretch') | null;
-    alignX?: ('justify-start' | 'justify-center' | 'justify-end' | 'justify-between') | null;
-    /**
-     * Define cuántas columnas tiene la grilla
-     */
-    cols?: {
-      base?: number | null;
-      sm?: number | null;
-      md?: number | null;
-      lg?: number | null;
-      xl?: number | null;
-    };
-    cells?:
-      | {
-          blocks: (
-            | RichTextBlockT
-            | ArchiveBlock
-            | {
-                source: 'latest' | 'byCategory' | 'manual';
-                category?: (number | null) | Category;
-                posts?: (number | Post)[] | null;
-                /**
-                 * Usa 5 para layout (1 principal + 4 secundarios).
-                 */
-                limit?: number | null;
-                offset?: number | null;
-                showDates?: boolean | null;
-                locale?: ('es' | 'en' | 'pt') | null;
-                id?: string | null;
-                blockName?: string | null;
-                blockType: 'heroGrid';
-              }
-            | {
-                /**
-                 * Prefijo de las URLs de categoría, ej. /category o /posts/categoria
-                 */
-                basePath?: string | null;
-                source: 'all' | 'selected';
-                /**
-                 * Arrastra para ordenar. Se respetará este orden.
-                 */
-                selectedCategories?: (number | Category)[] | null;
-                maxCategories?: number | null;
-                id?: string | null;
-                blockName?: string | null;
-                blockType: 'categoryMenu';
-              }
-            | {
-                id?: string | null;
-                blockName?: string | null;
-                blockType: 'perspectiveEconomy';
-              }
-            | CategorySectionBlock
-          )[];
-          vAlign?: ('self-stretch' | 'self-start' | 'self-center' | 'self-end') | null;
+  layout: (
+    | {
+        asContainer?: boolean | null;
+        maxWidth?: ('lg' | 'xl' | '2xl' | '7xl' | 'full') | null;
+        background?: ('transparent' | 'white' | 'neutral-900' | 'zinc-50' | 'panel') | null;
+        paddingY?: ('' | 'py-6 md:py-8' | 'py-8 md:py-12' | 'py-12 md:py-16' | 'py-16 md:py-24') | null;
+        gap?: ('gap-0' | 'gap-3 md:gap-4' | 'gap-4 md:gap-6' | 'gap-6 md:gap-8' | 'gap-8 md:gap-12') | null;
+        alignY?: ('items-start' | 'items-center' | 'items-end' | 'items-stretch') | null;
+        alignX?: ('justify-start' | 'justify-center' | 'justify-end' | 'justify-between') | null;
+        /**
+         * Define cuántas columnas tiene la grilla
+         */
+        cols?: {
           base?: number | null;
           sm?: number | null;
           md?: number | null;
           lg?: number | null;
           xl?: number | null;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-    blockName?: string | null;
-    blockType: 'row';
-  }[];
+        };
+        cells?:
+          | {
+              blocks: (
+                | RichTextBlockT
+                | ArchiveBlock
+                | {
+                    source: 'latest' | 'byCategory' | 'manual';
+                    category?: (number | null) | Category;
+                    posts?: (number | Post)[] | null;
+                    /**
+                     * Usa 5 para layout (1 principal + 4 secundarios).
+                     */
+                    limit?: number | null;
+                    offset?: number | null;
+                    showDates?: boolean | null;
+                    locale?: ('es' | 'en' | 'pt') | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'heroGrid';
+                  }
+                | {
+                    /**
+                     * Prefijo de las URLs de categoría, ej. /category o /posts/categoria
+                     */
+                    basePath?: string | null;
+                    source: 'all' | 'selected';
+                    /**
+                     * Arrastra para ordenar. Se respetará este orden.
+                     */
+                    selectedCategories?: (number | Category)[] | null;
+                    maxCategories?: number | null;
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'categoryMenu';
+                  }
+                | {
+                    id?: string | null;
+                    blockName?: string | null;
+                    blockType: 'perspectiveEconomy';
+                  }
+                | CategorySectionBlock
+              )[];
+              vAlign?: ('self-stretch' | 'self-start' | 'self-center' | 'self-end') | null;
+              base?: number | null;
+              sm?: number | null;
+              md?: number | null;
+              lg?: number | null;
+              xl?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'row';
+      }
+    | {
+        source: 'latest' | 'byCategory' | 'manual';
+        category?: (number | null) | Category;
+        posts?: (number | Post)[] | null;
+        /**
+         * Usa 5 para layout (1 principal + 4 secundarios).
+         */
+        limit?: number | null;
+        offset?: number | null;
+        showDates?: boolean | null;
+        locale?: ('es' | 'en' | 'pt') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'heroGrid';
+      }
+    | {
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'perspectiveEconomy';
+      }
+  )[];
+  /**
+   * Contenido de la columna derecha exclusivo para la página /home.
+   */
+  rightColumn?: (PopularNewsBlock | PromotedNewsBlock)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -621,6 +647,36 @@ export interface CategorySectionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'categorySection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PopularNewsBlock".
+ */
+export interface PopularNewsBlock {
+  title?: string | null;
+  limit?: number | null;
+  /**
+   * Selecciona manualmente las noticias que aparecerán como “populares” en la columna derecha.
+   */
+  posts: (number | Post)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'popularNews';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromotedNewsBlock".
+ */
+export interface PromotedNewsBlock {
+  title?: string | null;
+  limit?: number | null;
+  /**
+   * Selecciona manualmente las noticias que aparecerán como “promocionadas” en la columna derecha.
+   */
+  posts: (number | Post)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'promotedNews';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1175,6 +1231,31 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        heroGrid?:
+          | T
+          | {
+              source?: T;
+              category?: T;
+              posts?: T;
+              limit?: T;
+              offset?: T;
+              showDates?: T;
+              locale?: T;
+              id?: T;
+              blockName?: T;
+            };
+        perspectiveEconomy?:
+          | T
+          | {
+              id?: T;
+              blockName?: T;
+            };
+      };
+  rightColumn?:
+    | T
+    | {
+        popularNews?: T | PopularNewsBlockSelect<T>;
+        promotedNews?: T | PromotedNewsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1221,6 +1302,28 @@ export interface CategorySectionBlockSelect<T extends boolean = true> {
   columns?: T;
   limit?: T;
   category?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PopularNewsBlock_select".
+ */
+export interface PopularNewsBlockSelect<T extends boolean = true> {
+  title?: T;
+  limit?: T;
+  posts?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PromotedNewsBlock_select".
+ */
+export interface PromotedNewsBlockSelect<T extends boolean = true> {
+  title?: T;
+  limit?: T;
+  posts?: T;
   id?: T;
   blockName?: T;
 }
