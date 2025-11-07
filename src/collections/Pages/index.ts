@@ -83,14 +83,24 @@ export const Pages: CollectionConfig<'pages'> = {
           label: 'Right Column (Home)',
           fields: [
             {
-              name: 'rightColumn',
-              label: 'Columna derecha (/home)',
-              type: 'blocks',
-              blocks: [PopularNews, PromotedNews],
+              name: 'populars',
+              label: 'Populares / Destacadas',
+              type: 'relationship',
+              relationTo: 'posts',
               admin: {
-                initCollapsed: true,
-                description: 'Contenido de la columna derecha exclusivo para la página /home.',
+                hidden: true,
+                description: 'Noticias que aparecen en la columan de populares.',
               },
+            },
+            {
+              name: 'newspopulars',
+              label: 'Populares / Destacadas',
+              type: 'relationship',
+              relationTo: 'posts',
+              admin: {
+                description: 'Noticias que aparecen en la columan de populares.',
+              },
+              hasMany: true,
             },
           ],
           // Mostrar solo si el slug es 'home' o '/home'

@@ -85,6 +85,7 @@ export const Posts: CollectionConfig<'posts'> = {
     title: true,
     slug: true,
     categories: true,
+    seo: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],

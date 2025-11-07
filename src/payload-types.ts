@@ -246,9 +246,13 @@ export interface Page {
       }
   )[];
   /**
-   * Contenido de la columna derecha exclusivo para la página /home.
+   * Noticias que aparecen en la columan de populares.
    */
-  rightColumn?: (PopularNewsBlock | PromotedNewsBlock)[] | null;
+  populars?: (number | null) | Post;
+  /**
+   * Noticias que aparecen en la columan de populares.
+   */
+  newspopulars?: (number | Post)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -647,36 +651,6 @@ export interface CategorySectionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'categorySection';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PopularNewsBlock".
- */
-export interface PopularNewsBlock {
-  title?: string | null;
-  limit?: number | null;
-  /**
-   * Selecciona manualmente las noticias que aparecerán como “populares” en la columna derecha.
-   */
-  posts: (number | Post)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'popularNews';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PromotedNewsBlock".
- */
-export interface PromotedNewsBlock {
-  title?: string | null;
-  limit?: number | null;
-  /**
-   * Selecciona manualmente las noticias que aparecerán como “promocionadas” en la columna derecha.
-   */
-  posts: (number | Post)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'promotedNews';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1251,12 +1225,8 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
-  rightColumn?:
-    | T
-    | {
-        popularNews?: T | PopularNewsBlockSelect<T>;
-        promotedNews?: T | PromotedNewsBlockSelect<T>;
-      };
+  populars?: T;
+  newspopulars?: T;
   meta?:
     | T
     | {
@@ -1302,28 +1272,6 @@ export interface CategorySectionBlockSelect<T extends boolean = true> {
   columns?: T;
   limit?: T;
   category?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PopularNewsBlock_select".
- */
-export interface PopularNewsBlockSelect<T extends boolean = true> {
-  title?: T;
-  limit?: T;
-  posts?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "PromotedNewsBlock_select".
- */
-export interface PromotedNewsBlockSelect<T extends boolean = true> {
-  title?: T;
-  limit?: T;
-  posts?: T;
   id?: T;
   blockName?: T;
 }

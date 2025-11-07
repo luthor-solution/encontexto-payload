@@ -14,6 +14,8 @@ import USDMXNWidget from '@/components/USDMXNWidget'
 import WeatherWidget from '@/components/WeatherWidget'
 import NewsTickerSlider, { NewsItem } from '@/components/NewsTickerSlider'
 import payloadConfig from '@payload-config'
+import Destacadas from '@/components/Destacadas'
+import { Post } from '@/payload-types'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -100,7 +102,7 @@ export default async function Page({ params: paramsPromise }: Args) {
             >
               <USDMXNWidget />
               <br />
-              <FeaturedNewsSidebar basePath="/posts" limit={6} />
+              <Destacadas basePath="/posts" items={page.newspopulars as Post[]} />
             </div>
           </aside>
         </div>
@@ -124,6 +126,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     pagination: false,
+    depth: 5,
     overrideAccess: draft,
     where: { slug: { equals: slug } },
   })
