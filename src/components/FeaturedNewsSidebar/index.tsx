@@ -54,7 +54,10 @@ export default async function FeaturedNewsSidebar({
           const image = getPostImage(post as any)
 
           return (
-            <li key={post.slug} className="group">
+            <li
+              key={post.slug}
+              className="group border border-solid rounded-lg overflow-hidden p-2"
+            >
               <Link href={href} className="flex gap-3">
                 <div className="relative shrink-0 w-24 h-16 overflow-hidden rounded-md border border-zinc-200/40 dark:border-zinc-800/60">
                   <img
@@ -66,7 +69,9 @@ export default async function FeaturedNewsSidebar({
                 </div>
 
                 <div className="min-w-0">
-                  <h3 className="text-sm font-medium leading-snug line-clamp-2">{post.title}</h3>
+                  <h3 className="text-base md:text-xl font-medium leading-snug line-clamp-2">
+                    {post.title}
+                  </h3>
                   {date && <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{date}</p>}
                 </div>
               </Link>
