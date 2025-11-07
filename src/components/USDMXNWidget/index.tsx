@@ -32,7 +32,6 @@ function USDMXNWidget() {
       isTransparent: false,
       locale: 'en',
       largeChartUrl: '',
-      width: 350,
     })
 
     widgetHost.appendChild(script)
