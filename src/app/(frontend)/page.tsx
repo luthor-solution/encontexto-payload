@@ -100,6 +100,21 @@ export default async function Page({ params: paramsPromise }: Args) {
                 lg:self-start                  /* evita estirarse en el grid */
               "
             >
+              <script
+                async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3440639142447870"
+                crossOrigin="anonymous"
+              ></script>
+              <ins
+                className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-3440639142447870"
+                data-ad-slot="3957879730"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              ></ins>
+              <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+              <br />
               <USDMXNWidget />
               <br />
               <Destacadas basePath="/posts" items={page.newspopulars as Post[]} />
