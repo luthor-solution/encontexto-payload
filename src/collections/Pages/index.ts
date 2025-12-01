@@ -102,6 +102,16 @@ export const Pages: CollectionConfig<'pages'> = {
               },
               hasMany: true,
             },
+            {
+              name: 'sponsors',
+              label: 'Patrocinados',
+              type: 'relationship',
+              relationTo: 'posts',
+              admin: {
+                description: 'Noticias que aparecen en la columan de patrocinados.',
+              },
+              hasMany: true,
+            },
           ],
           // Mostrar solo si el slug es 'home' o '/home'
           admin: {

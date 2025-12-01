@@ -253,6 +253,10 @@ export interface Page {
    * Noticias que aparecen en la columan de populares.
    */
   newspopulars?: (number | Post)[] | null;
+  /**
+   * Noticias que aparecen en la columan de patrocinados.
+   */
+  sponsors?: (number | Post)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -1227,6 +1231,7 @@ export interface PagesSelect<T extends boolean = true> {
       };
   populars?: T;
   newspopulars?: T;
+  sponsors?: T;
   meta?:
     | T
     | {

@@ -34,14 +34,14 @@ export default async function Destacadas({
           return (
             <li
               key={post.slug}
-              className="group border border-solid rounded-lg overflow-hidden p-2"
+              className="group border border-solid rounded-lg overflow-hidden p-2 h-[100px]"
             >
-              <Link href={href} className="flex gap-3">
-                <div className="relative shrink-0 w-24 h-16 overflow-hidden rounded-md border border-zinc-200/40 dark:border-zinc-800/60">
+              <Link href={href} className="flex gap-3 h-full">
+                <div className="relative shrink-0 w-[120px] overflow-hidden rounded-md border border-zinc-200/40 dark:border-zinc-800/60">
                   <img
                     src={image || ''}
                     alt={post.title}
-                    className="object-cover transition-transform group-hover:scale-[1.03]"
+                    className="object-cover transition-transform group-hover:scale-[1.03] h-full w-full object-center"
                     sizes="96px"
                   />
                 </div>

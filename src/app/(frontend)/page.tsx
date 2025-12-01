@@ -117,6 +117,8 @@ export default async function Page({ params: paramsPromise }: Args) {
               <br />
               <USDMXNWidget />
               <br />
+              <Destacadas title="Patrocinados" basePath="/posts" items={page.sponsors as Post[]} />
+              <br />
               <Destacadas basePath="/posts" items={page.newspopulars as Post[]} />
             </div>
           </aside>
